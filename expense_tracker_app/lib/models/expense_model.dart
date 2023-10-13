@@ -28,3 +28,26 @@ class ExpenseModel {
     return '${date.day}/${date.month}/${date.year}';
   }
 }
+
+class ExpenseBucket {
+  const ExpenseBucket({required this.category, required this.expenses});
+
+  //Constructor alternativo
+  ExpenseBucket.forCategory(List<ExpenseModel> allExpenses, this.category)
+      : expenses = allExpenses
+            .where((expense) => expense.category == category)
+            .toList();
+
+  final ExpenseCategory category;
+  final List<ExpenseModel> expenses;
+
+  double get totalExpenses {
+    double sum = 0;
+
+    for (var expense in expenses) {
+      sum += expense.amount;
+    }
+
+    return sum;
+  }
+}

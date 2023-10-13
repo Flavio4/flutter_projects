@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/expense_category__enum.dart';
 import '../models/expense_model.dart';
+import 'chart/chart.dart';
 
 class ExpenseTracker extends StatefulWidget {
   const ExpenseTracker({super.key});
@@ -95,7 +96,7 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
       ),
       body: Column(
         children: [
-          const Text("Expensive Data"),
+          Chart(expenses: _registeredExpenses),
           Expanded(child: ExpenseList(_registeredExpenses, _removeExpense)),
         ],
       ),

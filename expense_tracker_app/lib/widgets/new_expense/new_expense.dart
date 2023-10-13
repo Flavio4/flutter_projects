@@ -48,11 +48,11 @@ class _NewExpenseState extends State<NewExpense> {
   }
 
   bool get _isFormInvalid {
-    final ammountNumber = double.tryParse(_amountController.text);
-    final ammountIsInvalid = ammountNumber == null || ammountNumber <= 0;
+    final amountNumber = double.tryParse(_amountController.text);
+    final amountIsInvalid = amountNumber == null || amountNumber <= 0;
 
     return (_titleController.text.isEmpty ||
-        ammountIsInvalid ||
+        amountIsInvalid ||
         _pickedDateController == null);
   }
 
@@ -67,7 +67,7 @@ class _NewExpenseState extends State<NewExpense> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(ctx);
               },
               child: const Text('Ok'),
             ),
