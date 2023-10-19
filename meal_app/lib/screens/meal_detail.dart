@@ -17,7 +17,22 @@ class MealDetailScreen extends ConsumerWidget {
         title: Text(meal.title),
         actions: [
           IconButton(
-            icon: Icon(isFavorite ? Icons.star : Icons.star_border),
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return RotationTransition(
+                  turns: Tween(
+                    begin: 0.8,
+                    end: 1.0,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+              child: Icon(
+                isFavorite ? Icons.star : Icons.star_border,
+                key: ValueKey(isFavorite),
+              ),
+            ),
             onPressed: () {
               //Llama al metodo toggleMealFavoriteStatus del provider favoriteMealsProvider
               final wasAdded = ref
@@ -37,11 +52,15 @@ class MealDetailScreen extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.network(
-              meal.imageUrl,
-              width: double.infinity,
-              height: 200,
-              fit: BoxFit.cover,
+            //Hero sirve para transicionar de una pantalla a otra, una imagen por ejemplo
+            Hero(
+              tag: meal.id,
+              child: Image.network(
+                meal.imageUrl,
+                width: double.infinity,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(height: 16),
             Text(

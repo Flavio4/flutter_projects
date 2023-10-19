@@ -31,12 +31,16 @@ class MealItem extends StatelessWidget {
         onTap: onSelectMeal,
         child: Stack(
           children: [
-            FadeInImage(
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(meal.imageUrl),
-              height: 200,
-              fit: BoxFit.cover,
-              width: double.infinity,
+            //Hero sirve para transicionar de una pantalla a otra, una imagen por ejemplo
+            Hero(
+              tag: meal.id,
+              child: FadeInImage(
+                placeholder: MemoryImage(kTransparentImage),
+                image: NetworkImage(meal.imageUrl),
+                height: 200,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
             ),
             Positioned(
               bottom: 0,

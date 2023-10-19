@@ -34,7 +34,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
     Navigator.pop(context);
     if (identifier == 'filters') {
       final route = MaterialPageRoute(
-        builder: (ctx) => FiltersScreen(),
+        builder: (ctx) => const FiltersScreen(),
       );
 
       Navigator.push(context, route);
