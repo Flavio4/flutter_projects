@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_list_app/widgets/new_item.dart';
 
+//Panel de formularios para nuevo producto
 class GroceryList extends StatefulWidget {
   const GroceryList({super.key});
 
@@ -10,7 +11,7 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   final _groceryItems = [];
-//Panel de formularios para nuevo producto
+
   void _openNewItemScreen() async {
     final route = MaterialPageRoute(
       builder: (ctx) => const NewItem(),

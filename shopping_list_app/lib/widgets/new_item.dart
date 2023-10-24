@@ -50,8 +50,11 @@ class _NewItemState extends State<NewItem> {
             key: _formKey,
             child: Column(
               children: [
+                //Text Field optimizado para formularios
                 TextFormField(
                   maxLength: 50,
+                  //validator es una funcion que recibe el valor del campo y retorna un string con el error o null si no hay error
+                  //Siempre que se llame a validate() se ejecutara esta funcion
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty ||
@@ -64,6 +67,8 @@ class _NewItemState extends State<NewItem> {
                   decoration: const InputDecoration(
                     labelText: 'Nombre',
                   ),
+                  //onSaved es una funcion que recibe el valor del campo y realiza alguna accion con el
+                  //Siempre que se llame a save() se ejecutara esta funcion
                   onSaved: (value) {
                     _enteredName = value!;
                   },
@@ -71,6 +76,8 @@ class _NewItemState extends State<NewItem> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    //Expanded es un widget que expande su hijo para ocupar todo el espacio disponible
+                    //Al usar row con expanded, el espacio disponible se divide entre los hijos expanded
                     Expanded(
                       child: TextFormField(
                         keyboardType: TextInputType.number,
@@ -96,6 +103,7 @@ class _NewItemState extends State<NewItem> {
                       width: 8,
                     ),
                     Expanded(
+                      //DropdownButtonFormField es un dropdown que se puede usar en formularios
                       child: DropdownButtonFormField(
                         value: _selectedCategory,
                         items: [
