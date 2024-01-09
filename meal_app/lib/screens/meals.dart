@@ -19,6 +19,7 @@ class MealsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: false,
         appBar: AppBar(
           title: Text(title),
         ),

@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shopping_list_app/data/categories.dart';
 import 'package:shopping_list_app/models/category.dart';
 import 'package:shopping_list_app/models/grocery_item.dart';
+import 'package:http/http.dart' as http;
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -16,8 +20,9 @@ class _NewItemState extends State<NewItem> {
   var _enteredName = '';
   var _enteredQuantity = 1;
   var _selectedCategory = categories[Categories.vegetables];
+  bool _isLoading = false;
 
-  void _submitForm() {
+  void _submitForm() async {
     //validate() llama a las validaciones de los TextFormField
     if (_formKey.currentState!.validate()) {
       //save() llama a los onSaved de los TextFormField
@@ -29,8 +34,41 @@ class _NewItemState extends State<NewItem> {
         quantity: _enteredQuantity,
         category: _selectedCategory!,
       );
-      Navigator.pop(context, newGroceryItem);
+      setState(() {
+        _isLoading = true;
+      });
+      final response = await postGroceryItem(newGroceryItem);
+
+      if (response.statusCode == 200) {
+        final id = json.decode(response.body)['name'];
+        final newGrocery = GroceryItem(
+          id: id,
+          name: _enteredName,
+          quantity: _enteredQuantity,
+          category: _selectedCategory!,
+        );
+        if (context.mounted) {
+          Navigator.pop(context, newGrocery);
+        }
+      }
+      setState(() {
+        _isLoading = false;
+      });
     }
+  }
+
+  Future<Response> postGroceryItem(GroceryItem groceryItem) {
+    final uri = Uri.https(
+      'my-http-test-4e807-default-rtdb.firebaseio.com',
+      'shopping-list.json',
+    );
+    final headers = {'Content-Type': 'application/json'};
+    final body = json.encode({
+      'name': groceryItem.name,
+      'quantity': groceryItem.quantity,
+      'category': groceryItem.category.title,
+    });
+    return http.post(uri, headers: headers, body: body);
   }
 
   void _resetForm() {
@@ -145,13 +183,19 @@ class _NewItemState extends State<NewItem> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      onPressed: _resetForm,
+                      onPressed: _isLoading ? null : _resetForm,
                       child: const Text('Resetear'),
                     ),
                     ElevatedButton(
-                      onPressed: _submitForm,
-                      child: const Text('Añadir Producto'),
-                    )
+                      onPressed: _isLoading ? null : _submitForm,
+                      child: _isLoading
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(),
+                            )
+                          : const Text('Añadir Producto'),
+                    ),
                   ],
                 ),
               ],
